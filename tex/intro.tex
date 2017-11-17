@@ -4,162 +4,31 @@
 %%==================================================
 
 %\bibliographystyle{sjtu2}%[此处用于每章都生产参考文献]
-\chapter{这是什么}
+\chapter{绪论}
 \label{chap:intro}
 
-这是上海交通大学(非官方)学位论文 \LaTeX 模板，当前版本是 \version 。
+\section{研究背景}
+云计算在过去十年中备受欢迎，并被广泛应用到实际使用中，大量的云计算平台例如Amazon Web Services(AWS)\footnote{https://aws.amazon.com}、阿里云\footnote{https://www.aliyun.com}和Microsoft Azure\footnote{https://azure.microsoft.com}等已经提供了高可用、可伸缩、低成本的云服务，并且这些云服务已经被很多软件服务厂商用作他们软件研发的基础框架。软件服务厂商通过将自身的业务从传统的机器集群迁移到云服务中，使自己更加专注于业务能力的提升，降低自身诸如服务器、制冷设备等物理硬件的采购和维护成本。在云计算浪潮中，虚拟化技术作为云计算技术的基石\cite{zhang2010cloud}，对提升整体的资源利用率提供了极大的帮助，其中以Xen\cite{barham2003xen}、KVM\cite{kivity2007kvm}和OpenStack\cite{sefraoui2012openstack}等虚拟机(Hypervisor)\cite{buyya2010cloud}方案作为代表。在最近几年中，容器化技术作为虚拟化技术实现的另一个选择，由于其轻量化、低成本和高效等特点\cite{soltesz2007container}，受到了越来越多云计算厂商的青睐，诸如AWS和阿里云等各大云计算厂商都推出了自己的容器云服务。容器虚拟化技术利用操作系统内核提供的cgroups和namespace等功能对进程进行封装隔离来实现虚拟化的目标。相比于传统的虚拟机技术中所必需的宿主端控制器和客户端操作系统，容器虚拟化技术利用内核的特性，以进程的方式直接运行于宿主端的操作系统内核，无需额外客户端操作系统。对比虚拟机常常需要数分钟才能完成一个虚拟化实例的启动，容器能在几秒之内完成一个虚拟化实例的启动，同时利用共享内存节省了加载客户端操作系统所消耗的资源。Docker\footnote{https://www.docker.com}由于其提出的Docker镜像机制而成为目前最受欢迎的容器虚拟化平台\cite{merkel2014docker}，被广泛应用于各容器云服务中。通过Docker镜像，用户能通过简答的操作在不同的机器上获得一致的运行环境，极大的方便了软件应用和服务的开发和部署，降低了整体开发、部署过程中的成本。Docker镜像已经成为当前实质意义上的容器运行环境标准而被广泛接受和采用，现有的各大容器云提供商也都支持Docker镜像作为自身的标准容器镜像。
 
-最早的一版学位模板是一位热心的物理系同学制作的。
-那份模板参考了自动化所学位论文模板，使用了CASthesis.cls文档类，中文字符处理则采用当时最为流行的 \CJKLaTeX 方案。
-我根据交大研究生院对学位论文的要求
-\footnote{\url{http://www.gs.sjtu.edu.cn/policy/fileShow.ahtml?id=130}}
-，结合少量个人审美喜好，完成了一份基本可用的交大 \LaTeX 学位论文模板。
-但是，搭建一个 \CJKLaTeX 环境并不简单，单单在Linux下配置环境和添加中文字体，就足够让新手打退堂鼓。
-在William Wang的建议下，我开始着手把模板向 \XeTeX 引擎移植。
-他完成了最初的移植，多亏了他出色的工作，后续的改善工作也得以顺利进行。
+于此同时，随着互联网的爆发和普及，网络流量的变化越来越迅速和激烈。例如天猫的双十一活动和春运期间火爆的网上火车票销售，既显示出在当前的网络环境下网络流量的突发性变化已经成为常态，也揭示出流量的迅速变化对服务整体稳定性带来的考验。用户和云服务提供商之间就服务的响应时间、吞吐量和可用性等可量化标准达成一致，形成服务质量约束(Service Level Agreement， SLA)\cite{patel2009service}。利用云计算中“pay-as-you-go”的服务计费方式\cite{armbrust2010view}，越来越多的厂商用可以快速自动伸缩的容器云服务来代替传统的物理设备来作为自己的基础设施以应对动态变化的流量负载。通过云服务厂商提供的实时监控工具和动态伸缩工具，用户可以指定相应的调节阈值来实现自动伸缩。在容器云中，服务通常代表一个在云中正常运行的应用，一个任务则代表一个运行着相应服务的容器实例。以AWS为例，通过Auto Scaling这个工具，用户以CPU使用率作为伸缩策略的基准，当最近10分钟的CPU使用量持续超过80\%时，AWS将自动增加30\%的实例个数。此外，用户也可以根据监控系统的实时监控状态，基于以往的经验进行实例的添加或删除，从而达到服务伸缩的目的。除了使用云服务上提供的公有云服务之外，用户也能通过使用诸如Docker swarm、Kubernetes和Mesos等容器管理框架构建私有容器云来满足自身的容器虚拟化需要，达到提高资源利用率和降低成本的目的。
 
-随着我对 \LaTeX 系统认知增加，我又断断续续做了一些完善模板的工作，在原有硕士学位论文模板的基础上完成了交大学士和博士学位论文模板。
+\section{研究意义}
+通过对已有的各个公有容器云服务和容器管理框架进行调查，现有的容器云服务模式和容器管理框架存在如下几点问题:
+\begin{enumerate}
+\item 通过主观阈值或者手工操作被动的应对负载变化。用户只能基于个人经验，通过设定阈值的方式来实现动态伸缩或者手动调节，针对负载的变化响应迟缓并存在一定的误差。
+\item 没有合理区分服务的可用性要求和负载需求。在目前所有的容器云服务中，服务的副本数定义为需要实例的个数，这并不妥当。一方面，副本的定义通常和可用性要求有关。一个服务的副本数被用来表征一个服务为了满足自身的可用性规约而需要的最少实例数，这通常在最开始的阶段就根据用户和服务提供商之间的SLA而确定了并且很少发生变化\cite{beyer2016site}。另一方面，服务的实际实例数目则是和服务当前的服务的负载状态实时相关，根据服务实际的负载改变实例的数目来保证服务正常稳定的运行。
+\item 只有针对应用本身的负载均衡，缺乏对容器云整体负载的自动调度和管理。通过对Docker swarm、Kubernetes和Mesos等容器管理框架的调查，目前已有的调度策略并不能很好的应对负载快速变化的场景。根据Google在发表Borg的论文中提到的数据，Borg中容器运行所需要的相关依赖和环境配置时间占据了全部容器启动时间的80\%\cite{verma2015large}。
+Docker swarm集群中的默认调度策略是根据资源需求和其他约束条件将应用分发到当前负载最少的节点中去，而这也是其目前唯一支持的调度策略。在该策略下，服务被尽可能地分散到了各个节点上，使得整体的平均负载最低。然而这个调度策略会增加整个集群的内部网络流量并减慢相关服务在集群中的创建和分发速度。在Kubernetes和Mesos等容器集群框架中，虽然支持基于镜像的调度方式，但是只针对相同的容器镜像。因此，对于需要同时满足自身可用性需求和应对负载的动态变化的服务，目前Docker和Kubernetes等框架中已有的调度策略并不能满足他们的需要。
+\end{enumerate}
 
-现在，交大学位论文模板SJTUTHesis代码在github
-\footnote{\url{https://github.com/weijianwen/SJTUThesis}}
-上维护。
-你可以\href{https://github.com/weijianwen/SJTUThesis/issues}{在github上开issue}
-、或者在\href{https://bbs.sjtu.edu.cn/bbsdoc?board=TeX_LaTeX}{水源LaTeX版}发帖来反映遇到的问题。
+\section{研究目的和内容}
+本文将同时考虑用户和容器云供应商的利益，着重解决在满足可用性指标的前提下，如何充分利用容器云中的资源以应对变化的负载。为此，本文提出了一个基于容器的主动式云负载管理模型，通过对负载进行预测来减少用户手动的调整操作。该模型可以在满足用户可用性指标的前提下，根据负载的历史变化对即将到来的负载进行预测，并根据预测结果进行预先调节；根据当前的负载对当前的资源分配进行调整以适应实际负载，避免由于预测错误所带来的额外开销并降低违反SLA的风险；通过整合云中资源，提高资源使用率，提高对负载变化的响应能力。
+为了实现相关研究目标，研究内容主要为：
+\begin{enumerate}
+\item 负载的监测和预测：本文将以内存、CPU时间、磁盘和网络带宽等资源的使用量和使用率作为负载的衡量，对系统进行实时的监测，从而获得系统的负载状态。利用合适的预测模型，对系统负载的历史数据进行分析处理从而得出将来一段时间内可能的资源使用量。
+\item 生成相应的资源供给和管理方案：建立云服务中的可用性模型，基于可用性分析和SLO确定副本数，基于预测的负载确认服务需要的实例数，从而得到实际的资源供给方案。根据实时的资源使用状态和负载状态，对预测的资源分配方案进行调整。在每次资源供给方案执行完成后，根据系统当前的实际资源使用状态进行优化整合，通过迁移等方式提供最少的设备以满足系统对资源的要求。
+\item 动态负载的分配方案：基于实际负载状态和容器云中的当前状态，对容器云中所有实例的分布进行优化和调整，在满足SLO中可用性相关需求的基础上，提高资源利用率，实现整体的负载均衡，减少云服务供应商的成本，提高其服务质量。
+\end{enumerate}
 
-\section{使用模板}
-
-\subsection{准备工作}
-\label{sec:requirements}
-
-要使用这个模板撰写学位论文，需要在\emph{TeX系统}、\emph{中英文字体}、\emph{TeX技能}上有所准备。
-
-\begin{itemize}[noitemsep,topsep=0pt,parsep=0pt,partopsep=0pt]
-	\item {\TeX}系统：所使用的{\TeX}系统要支持 \XeTeX 引擎，且带有ctex 2.x宏包，以2015年的\emph{完整}TeXLive、MacTeX发行版为佳。
-	\item 中英文字体：操作系统中需要安装\footnote{在Windows、Mac OS X 以及 Linux 上安装额外的字体，可以参考\href{https://www.searchfreefonts.com/articles/how-to-install-fonts.htm}{“How to install fonts?”}。
-}TeX Gyre Termes字体\footnote{\url{http://www.gust.org.pl/projects/e-foundry/tex-gyre/termes}}和四款Adobe中文字体
-\footnote{请从合法渠道获得Adobe字体。}：AdobeSongStd、AdobeKaitiStd、AdobeHeitiStd、AdobeFangsongStd。
-	\item TeX技能：尽管提供了对模板的必要说明，但这不是一份“ \LaTeX 入门文档”。在使用前请先通读其他入门文档。
-	\item 针对Windows用户的额外需求：学位论文模本分别使用git和GNUMake进行版本控制和构建，建议从Cygwin\footnote{\url{http://cygwin.com}}安装这两个工具。
-\end{itemize}
-
-\subsection{模板选项}
-\label{sec:thesisoption}
-
-sjtuthesis提供了一些常用选项，在thesis.tex在导入sjtuthesis模板类时，可以组合使用。
-这些选项包括：
-
-\begin{itemize}[noitemsep,topsep=0pt,parsep=0pt,partopsep=0pt]
-\item 学位类型：bachelor(学位)、master(硕士)、doctor(博士)，是必选项。
-\item 中国字体：adobefonts(Adobe中文字体)、winfonts(使用Windows下的中文字体，该选项未在Linux/Mac下测试)。
-\item 正文字号：cs4size(小四)、c5size(五号)。
-\item 盲审选项：使用review选项后，论文作者、学号、导师姓名、致谢、发表论文和参与项目将被隐去。
-\end{itemize}
-
-\subsection{编译模板}
-\label{sec:process}
-
-模板默认使用GNUMake构建，GNUMake将调用latemk工具自动完成模板多轮编译：
-
-\begin{lstlisting}[basicstyle=\small\ttfamily, caption={编译模板}, numbers=none]
-make clean thesis.pdf
-\end{lstlisting}
-
-若需要生成包含“原创性声明扫描件”的学位论文文档，请将扫描件保存为statement.pdf，然后调用make生成submit.pdf。
-
-\begin{lstlisting}[basicstyle=\small\ttfamily, caption={生成用于提交的学位论文}, numbers=none]
-make clean submit.pdf
-\end{lstlisting}
-
-编译失败时，可以尝试手动逐次编译，定位故障。
-
-\begin{lstlisting}[basicstyle=\small\ttfamily, caption={手动逐次编译}, numbers=none]
-xelatex -no-pdf thesis
-biber --debug thesis
-xelatex thesis
-xelatex thesis
-\end{lstlisting}
-
-\subsection{模板文件布局}
-\label{sec:layout}
-
-\begin{lstlisting}[basicstyle=\small\ttfamily,caption={模板文件布局},label=layout,float,numbers=none]
-├── LICENSE
-├── Makefile
-├── README.md
-├── bib
-│   ├── chap1.bib
-│   └── chap2.bib
-├── bst
-│   └── GBT7714-2005NLang.bst
-├── figure
-│   ├── chap2
-│   │   ├── sjtulogo.eps
-│   │   ├── sjtulogo.jpg
-│   │   ├── sjtulogo.pdf
-│   │   └── sjtulogo.png
-│   └── sjtubanner.png
-├── sjtuthesis.cfg
-├── sjtuthesis.cls
-├── statement.pdf
-├── submit.pdf
-├── tex
-│   ├── abstract.tex
-│   ├── ack.tex
-│   ├── app_cjk.tex
-│   ├── app_eq.tex
-│   ├── app_log.tex
-│   ├── chapter01.tex
-│   ├── chapter02.tex
-│   ├── chapter03.tex
-│   ├── conclusion.tex
-│   ├── id.tex
-│   ├── patents.tex
-│   ├── projects.tex
-│   ├── pub.tex
-│   └── symbol.tex
-└── thesis.tex
-\end{lstlisting}
-
-本节介绍学位论文模板中木要文件和目录的功能。
-
-\subsubsection{格式控制文件}
-\label{sec:format}
-
-格式控制文件控制着论文的表现形式，包括以下几个文件：
-sjtuthesis.cfg, sjtuthesis.cls和GBT7714-2005NLang.bst。
-其中，“cfg”和“cls”控制论文主体格式，“bst”控制参考文献条目的格式，
-
-\subsubsection{主控文件thesis.tex}
-\label{sec:thesistex}
-
-主控文件thesis.tex的作用就是将你分散在多个文件中的内容“整合”成一篇完整的论文。
-使用这个模板撰写学位论文时，你的学位论文内容和素材会被“拆散”到各个文件中：
-譬如各章正文、各个附录、各章参考文献等等。
-在thesis.tex中通过“include”命令将论文的各个部分包含进来，从而形成一篇结构完成的论文。
-对模板定制时引入的宏包，建议放在导言区。
-
-\subsubsection{各章源文件tex}
-\label{sec:thesisbody}
-
-这一部分是论文的主体，是以“章”为单位划分的，包括：
-
-\begin{itemize}[noitemsep,topsep=0pt,parsep=0pt,partopsep=0pt]
-	\item 中英文摘要(abstract.tex)。前言(frontmatter)的其他部分，中英文封面、原创性声明、授权信息在sjtuthesis.cls中定义，不单独分离为tex文件。
-不单独弄成文件。
-	\item 正文(mainmatter)——学位论文正文的各章内容，源文件是chapter\emph{xxx}.tex。
-	\item 附录(app\emph{xx}.tex)、致谢(thuanks.tex)、攻读学位论文期间发表的学术论文目录(pub.tex)、个人简历(resume.tex)组成正文后的部分(backmatter)。
-参考文献列表由bibtex插入，不作为一个单独的文件。
-\end{itemize}
-
-\subsubsection{图片文件夹figure}
-\label{sec:fig}
-
-figure文件夹放置了需要插入文档中的图片文件(支持PNG/JPG/PDF/EPS格式的图片)，可以在按照章节划分子目录。
-模板文件中使用\verb|\graphicspath|命令定义了图片存储的顶层目录，在插入图片时，顶层目录名“figure”可省略。
-
-\subsubsection{参考文献数据库bib}
-\label{sec:bib}
-
-目前参考文件数据库目录只存放一个参考文件数据库thesis.bib。
-关于参考文献引用，可参考第\ref{chap:example}章中的例子。
-
+\section{论文结构}
+本文一共六章，其中本章介绍了本文的研究背景，分析了研究意义，然后又介绍了研究目的和研究内容。其余章节组织如下：第\ref{chap:art_of_state}章介绍了相关技术和相关领域的国内外研究现状；第\ref{chap:sys_design}章从系统的整体架构开始，对系统的详细设计进行了介绍和说明；第\ref{chap:sys_impl}章详细介绍了关于本文提出的模型，以Docker swarm作为容器云的实现，介绍了各模块的具体实现，并对整体实现思路进行了分析和讨论；第\ref{chap:sys_eval}章介绍了本文为了验证方案正确性和有效性所进行的实验，对实验结果进行说明并对此进行深入的探讨；第\ref{chap:summary}章对本文的主要工作成果进行总结，并对未来工作进行了展望。
