@@ -26,9 +26,9 @@ view : $(THESIS).pdf
 	open $<
 
 wordcount:
-	@perl texcount.pl $(THESIS).tex -inc          | awk '/total/ {getline; print "è¯æ•°    :",$$4}' 
-	@perl texcount.pl $(THESIS).tex -inc -char    | awk '/total/ {getline; print "å­—ç¬¦æ•°  :",$$4}' 
-	@perl texcount.pl $(THESIS).tex -inc -ch-only | awk '/total/ {getline; print "ä¸­æ–‡å­—æ•°:",$$4}' 
+	@perl texcount.pl $(THESIS).tex -inc          | awk '/total/ {getline; print "´ÊÊý    :",$$4}' 
+	@perl texcount.pl $(THESIS).tex -inc -char    | awk '/total/ {getline; print "×Ö·ûÊý  :",$$4}' 
+	@perl texcount.pl $(THESIS).tex -inc -ch-only | awk '/total/ {getline; print "ÖÐÎÄ×ÖÊý:",$$4}' 
 
 clean :
 	latexmk -C
