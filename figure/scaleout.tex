@@ -1,0 +1,20 @@
+\begin{tikzpicture}[node distance=4cm]
+    \node (pair) [startstop] {待比较任务节点组};
+    \node (replica) [decision, below of=pair] {副本数差距更大？};
+    \node (layers) [decision, right of=replica, xshift=3cm] {层级文件缓存更多？};
+    \node (drf) [decision, right of=layers, xshift=3cm] {优势资源更高？};
+    \node (id) [process, right of=drf] {比较ID};
+    \node (return) [startstop, below of=replica, yshift=-0.5cm] {优先级更高的任务节点组};
+     
+    %连接具体形状
+    \draw [arrow](pair) -- (replica);
+    \draw [arrow](replica) -- node[anchor=south] {否} (layers);
+    \draw [arrow](layers) -- node[anchor=south] {否} (drf);
+    \draw [arrow](drf) -- node[anchor=south] {否} (id);
+    \draw [arrow](id) |- (return);
+
+    \draw [arrow](replica) -- node[anchor=east] {是} (return);
+    \draw [arrow](layers) |- node[anchor=north] {是} (return);
+    \draw [arrow](drf) |- node[anchor=north] {是} (return);
+
+\end{tikzpicture}
