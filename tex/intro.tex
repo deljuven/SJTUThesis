@@ -7,7 +7,7 @@
 \chapter{绪论}
 \label{chap:intro}
 
-\section{研究背景和研究意义}
+\section{研究背景和研究意义}\label{sec:intro_bg}
 云计算在过去十年中备受欢迎，并被广泛应用到实际使用中，大量的云计算平台例如Amazon Web Services(AWS)\footnote{https://aws.amazon.com}、阿里云\footnote{https://www.aliyun.com}和Microsoft Azure\footnote{https://azure.microsoft.com}等已经提供了高可用、可伸缩、低成本的云服务，并且这些云服务已经被很多软件服务厂商用作他们软件研发的基础框架。软件服务厂商通过将自身的业务从传统的机器集群迁移到云服务中，使自己更加专注于业务能力的提升，降低自身诸如服务器、制冷设备等物理硬件的采购和维护成本。
 
 在云计算浪潮中，虚拟化技术作为云计算技术的基石\cite{zhang2010cloud}，对提升整体的资源利用率提供了极大的帮助，其中以Xen\cite{barham2003xen}、KVM\cite{kivity2007kvm}和OpenStack\cite{sefraoui2012openstack}等虚拟机(Hypervisor)\cite{buyya2010cloud}方案作为代表。在最近几年中，容器化技术作为虚拟化技术实现的另一个选择，由于其轻量化、低成本和高效等特点\cite{soltesz2007container}，受到了越来越多云计算厂商的青睐，诸如AWS和阿里云等各大云计算厂商都推出了自己的容器云服务。容器虚拟化技术利用操作系统内核提供的cgroups和namespace等功能对进程进行封装隔离来实现虚拟化的目标。相比于传统的虚拟机技术中所必需的宿主端控制器和客户端操作系统，容器虚拟化技术利用内核的特性，以进程的方式直接运行于宿主端的操作系统内核，无需额外客户端操作系统。对比虚拟机常常需要数分钟才能完成一个虚拟化实例的启动，容器能在几秒之内完成一个虚拟化实例的启动，同时利用共享内存节省了加载客户端操作系统所消耗的资源。
