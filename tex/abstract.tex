@@ -4,13 +4,33 @@
 %%==================================================
 
 \begin{abstract}
+随着云计算在过去十年间的发展，越来越多的软件厂商和软件服务提供商选择将业务迁移到云平台中以降低自身的运营维护成本。容器虚拟化技术作为云计算的另一种实现方式，由于其轻量、高效的特性在过去几年备受云计算厂商的关注和青睐，Docker作为目前最受欢迎的容器虚拟化平台，由于其提出的Docker镜像机制而被广泛应用于容器云中充当基础平台。于此同时，随着互联网的爆发和普及，突发性的负载变化越来越成为常态。虽然容器云用户可以通过设定阈值的方式通过监控负载状态进行服务的自动伸缩，但是这些调整都只能被动地相应负载的变化，除了滞后于实际负载变化外还需要依赖用户根据主观的方式来设定阈值。除此之外，目前用于构建容器云的容器集群框架中并没有合理服务的可用性需求和负载需求，只是单纯地利用服务的实例数来统一应对服务的可用性需求和负载要求。在应对负载变化方面，现有的容器集群框架也更多的关注于对应用或者服务的负载均衡，在负载迅速变化的场景下缺乏相应的任务调度和管理机制，从而无法快速响应变化的负载。
 
+为了应对如今越来越复杂的负载环境，本文提出了一个基于容器的主动式云资源管理模型，着重解决在满足可用性指标的前提下，通过对负载进行预测来提前对服务进行调整，主动应对负载的变化，减少用户手动的调节设置；利用容器镜像的特性使容器云快速响应负载的变化，从而更好地应对现实中激烈多变的负载，在保证容器云中服务的服务质量的同时降低了容器云供应商的成本。
 
-\keywords{\large s \quad s \quad s}
+本文通过将以内存、CPU时间、磁盘和网络带宽等资源的使用量和使用率作为负载的衡量，对系统进行实时的监测，从而获得系统实时的负载状态。随后根据历史资源使用状态监测数据，通过使用相应的预测模型对资源使用状态进行预测，给出未来一段时间内的资源使用量的预测值。
+
+在获得预测到的资源使用状态之后，本文通过模型中的资源供给方案生成模块将相应的资源使用量转化成相应服务需要的实例数。由于预测本身不能保证完全的准确，我们在模型中通过资源供给优化模块根据实时的资源使用状态对服务实例规模进行调整。资源管理模块会基于满足服务可用性要求所需要的副本数，分别根据基于预测和实际监测得到的实例数确认最终进行调整的任务实例规模。
+
+在确认了最终需要调整的服务实例规模之后，本文提出的模型通过负载优化模块利用服务伸缩的方法进行实际的调整。本文利用Docker镜像的层级文件系统和内容寻址特性，提出一个基于层级文件缓存的启发式调度算法。根据当前容器云中所有节点的资源分配状态和目标服务的限制选择合适的节点来托管相应任务实例，通过分析服务中任务实例的分布状态，利用节点上的Docker镜像层级文件缓存以减少依赖环境的下载和安装的耗时，从而降低了服务伸缩操作的延迟，达到在保证服务可用性的基础上提升响应速度的目标。
+
+最后，本文为了验证模型的有效性设计了相关实验。实验结果证明，本课题使用的预测模型可以为主动性调整提供一个相对可靠的预测结果；在负载急剧增加的场景下，和Docker \emph{swarm}框架相比，本文提出的模型显著加快了服务在容器云中的扩展速度；而在负载降低的场景下，本文提出的模型保证了服务收缩的操作和Docker \emph{swarm}框架中的服务收缩操作一样高效；在对服务的实例规模进行调整的过程中，服务的样本规模始终保证满足设定的副本数目标。从所有的实验结果可以看出本文提出的模型在负载变化的环境下可以提升容器云对变化负载的应对能力和服务调整的灵活性。
+
+\keywords{\large 容器云 \quad 负载变化 \quad 负载预测 \quad Docker镜像 \quad 集群管理和调度}
 \end{abstract}
 
 \begin{englishabstract}
+With the development of Cloud Computing in the last ten years, there more and more software producers and service providers trying to mitigate their services from traditional clusters to clouds for lower costs and other benefits brought by virtualization. Containerization is becoming increasingly popular in virtualization nowadays and Docker is one of the most popular container platforms to deploy and manage applications. Docker introduces Docker image which is considered as the basement of container-based clouds. Besides, as the internet is widely spread and in common use, load varies more dynamically and more intensively. Whereas cloud users can use certain tools, provided by cloud providers, to scale services automatically by setting some thresholds, the adjustment always lags behind the load changes and depends on subjective estimation. What's more, the definition of replica is equivalent to the number of instances in all container cluster frameworks, which are used as the infrastructure of container-based clouds. The lack of suitable scheduling policy and management mechanism in these frameworks makes services difficult to cope with dynamic load changes.
 
-\englishkeywords{\large SJTU, master thesis, XeTeX/LaTeX template}
+Fast startup and spread of services provides services the ability of reacting to bursting load changes rapidly. In this paper, we introduce a proactive load optimizer model in container-based cloud to accelerate the process of service creation and spread in container-based clouds to cope with dynamic load changes. The models makes scale decisions in advance, depending on load predictions according to history data. What's more, the model leverages caches from Docker image filesystems to speed up the creation and spread of services in container clouds, under the promise of meeting their availability requirements.
+
+In the model, we monitor the resources usage status, such as memory, cpu time and network bandwidth, etc.. We take these resource usage status as the measurements of real-time loads. Later, we use certain prediction models to predicate the resource usages in the next periods according to history monitor data.
+
+Provision module is used to get the accurate number of instances accroding to resource usage predictions in the model. As predictions have no accuracy promises for the actual load changes, we use optimization module to adjust the scale when real-time load is out of some thresholds. After all, management module is used to make the final decisions about the scales of corresponding services accroding to their replica requirements.
+
+In the scheduling module, the service will be scaled according to the confirmed size. In the model, we introduce a heuristic scheduling algorithm, which leverages the layered file system in Docker image and the feature of content addressability, to make final scheduling decisions for services, in consideration of replica distributions, reusable buffered layers and resource allocations. In the algorithm, we try to minimise the time cost during the download and installation of dependency packages and environments to speed up the process of service creation and service scaling.
+
+Finally, we design some experiments to validate the model. The accuracy of predications for load changes in the model is acceptable.By comparing the model with Docker swarm, the results show that it's much faster to create a service and scale out a service with the help of the model. The time consumption of scaling in a service is almost the same in both Docker swarm and the model. We introduce a new constraint as replica to assure services not violating their replica requirements with the model. All of the results show that the model has a better performance for services in container-based clouds with dynamically varying loads.
+
+\englishkeywords{\large Container-based Cloud, Docker Image, Load Changes, Load Prediction, Cluster Scheduling}
 \end{englishabstract}
-
