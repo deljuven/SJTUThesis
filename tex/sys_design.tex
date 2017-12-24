@@ -80,7 +80,7 @@ Correctness_{algo} = \frac{Count(Usage_{predication} >= Usage_{actual})}{Count(U
 \overline{ME_{algo}} = \frac{\sum_{time \in period} {\frac{\vert Usage_{predication_{time}} - Usage_{actual_{time}}\vert}{Usage_{actual_{time}}}}}{Count(time)}
 \end{equation}
 \begin{equation}\label{eq:algo_mse}
-\overline{MSE_{algo}} = \frac{\sum_{time \in period} {\frac{\vert Usage_{predication_{time}}^{2} - Usage_{actual_{time}}^{2}\vert}{Usage_{actual_{time}}^{2}}}}{Count(time)}
+\overline{MSE_{algo}} = \frac{\sum_{time \in period} {\frac{(Usage_{predication_{time}} - Usage_{actual_{time}})^{2}}{Usage_{actual_{time}}^{2}}}}{Count(time)}
 \end{equation}
 
 \subsubsection{基于整合移动平均自回归模型的预测算法}
